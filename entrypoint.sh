@@ -8,44 +8,37 @@ YELLOW='\033[0;33m'
 BLUE='\033[0;34m'
 RED='\033[0;31m'
 
-npm i -g markdown-link-check@3.8.7
+pip install mkdocs-linkcheck
 
 declare -a FIND_CALL
 declare -a COMMAND_DIRS COMMAND_FILES
 declare -a COMMAND_FILES
 
-USE_QUIET_MODE="$1"
-USE_VERBOSE_MODE="$2"
-CONFIG_FILE="$3"
-FOLDER_PATH="$4"
-MAX_DEPTH="$5"
-CHECK_MODIFIED_FILES="$6"
-BASE_BRANCH="$7"
-if [ -z "$8" ]; then
-   FILE_EXTENSION=".md"
+if [ -z "$1" ]; then
+    EXCLUDES="__none__"
 else
-   FILE_EXTENSION="$8"
+    EXCLUDES="$1"
 fi
-FILE_PATH="$9"
-
-if [ -f "$CONFIG_FILE" ]; then
-   echo -e "${BLUE}Using markdown-link-check configuration file: ${YELLOW}$CONFIG_FILE${NC}"
+if [ -z "$2" ]; then
+    FILE_EXTENSION=".md"
 else
-   echo -e "${BLUE}Cannot find ${YELLOW}$CONFIG_FILE${NC}"
-   echo -e "${YELLOW}NOTE: See https://github.com/tcort/markdown-link-check#config-file-format to know more about"
-   echo -e "customizing markdown-link-check by using a configuration file.${NC}"
+    FILE_EXTENSION="$2"
 fi
+FOLDER_PATH="$3"
+LOCAL_ONLY="$4"
+HTTP_METHOD="$5"
+RECURSE="$6"
+SYNC_MODE="$7"
+USE_VERBOSE_MODE="$8"
 
-FOLDERS=""
-FILES=""
-
-echo -e "${BLUE}USE_QUIET_MODE: $1${NC}"
-echo -e "${BLUE}USE_VERBOSE_MODE: $2${NC}"
-echo -e "${BLUE}FOLDER_PATH: $4${NC}"
-echo -e "${BLUE}MAX_DEPTH: $5${NC}"
-echo -e "${BLUE}CHECK_MODIFIED_FILES: $6${NC}"
-echo -e "${BLUE}FILE_EXTENSION: $8${NC}"
-echo -e "${BLUE}FILE_PATH: $9${NC}"
+echo -e "${BLUE}EXCLUDES: $1${NC}"
+echo -e "${BLUE}FILE_EXTENSION: $2${NC}"
+echo -e "${BLUE}FOLDER_PATH: $3${NC}"
+echo -e "${BLUE}LOCAL_ONLY: $4${NC}"
+echo -e "${BLUE}HTTP_METHOD: $5${NC}"
+echo -e "${BLUE}RECURSE: $6${NC}"
+echo -e "${BLUE}SYNC_MODE: $7${NC}"
+echo -e "${BLUE}VERBOSE_MODE: $8${NC}"
 
 handle_dirs () {
 
@@ -54,32 +47,14 @@ handle_dirs () {
    for index in "${!DIRLIST[@]}"
    do
       if [ ! -d "${DIRLIST[index]}" ]; then
-         echo -e "${RED}ERROR [✖] Can't find the directory: ${YELLOW}${DIRLIST[index]}${NC}"
-         exit 2
+	  # changing the behavior around this because I am not sure I understand how actions work
+          echo -e "${RED}WARNING [✖] Can't find the directory: ${YELLOW}${DIRLIST[index]}${NC}"
+          #echo -e "${RED}ERROR [✖] Can't find the directory: ${YELLOW}${DIRLIST[index]}${NC}"
+          #exit 2
       fi
       COMMAND_DIRS+=("${DIRLIST[index]}")
    done
    FOLDERS="${COMMAND_DIRS[*]}"
-
-}
-
-handle_files () {
-
-   IFS=', ' read -r -a FILELIST <<< "$FILE_PATH"
-
-   for index in "${!FILELIST[@]}"
-   do
-      if [ ! -f "${FILELIST[index]}" ]; then
-         echo -e "${RED}ERROR [✖] Can't find the file: ${YELLOW}${FILELIST[index]}${NC}"
-         exit 2
-      fi
-      if [ "$index" == 0 ]; then
-         COMMAND_FILES+=("-wholename ${FILELIST[index]}")
-      else
-         COMMAND_FILES+=("-o -wholename ${FILELIST[index]}")
-      fi
-   done
-   FILES="${COMMAND_FILES[*]}"
 
 }
 
@@ -106,97 +81,55 @@ check_errors () {
 }
 
 add_options () {
-
-   if [ -f "$CONFIG_FILE" ]; then
-      FIND_CALL+=('--config' "${CONFIG_FILE}")
+    
+   if [ "$EXCLUDES" != "__none__" ]; then
+      FIND_CALL+=("--exclude $EXCLUDES")
+   fi
+   
+   if [ "$RECURSE" = "yes" ]; then
+      FIND_CALL+=('--recurse')
+   fi
+   
+   if [ "$LOCAL_ONLY" = "yes" ]; then
+      FIND_CALL+=('--local')
    fi
 
-   if [ "$USE_QUIET_MODE" = "yes" ]; then
-      FIND_CALL+=('-q')
+   if [ "$SYNC_MODE" = "yes" ]; then
+      FIND_CALL+=('--sync')
+   fi
+
+   if [ "$HTTP_METHOD" ]; then
+      FIND_CALL+=("--method $HTTP_METHOD")
+   fi
+
+   if [ "$FILE_EXTENSION" ]; then
+      FIND_CALL+=("--ext $FILE_EXTENSION")
    fi
 
    if [ "$USE_VERBOSE_MODE" = "yes" ]; then
-      FIND_CALL+=('-v')
+      FIND_CALL+=('--verbose')
+   fi
+
+   if [ -d "$FOLDER_PATH" ]; then
+      FIND_CALL+=("$FOLDER_PATH")
    fi
 
 }
 
-check_additional_files () {
-
-   if [ -n "$FILES" ]; then
-      if [ "$MAX_DEPTH" -ne -1 ]; then
-         FIND_CALL=('find' '.' '-type' 'f' '(' ${FILES} ')' '-not' '-path' './node_modules/*' '-maxdepth' "${MAX_DEPTH}" '-exec' 'markdown-link-check' '{}')
-      else
-         FIND_CALL=('find' '.' '-type' 'f' '(' ${FILES} ')' '-not' '-path' './node_modules/*' '-exec' 'markdown-link-check' '{}')
-      fi
-
-      add_options
-
-      FIND_CALL+=(';')
-
-      set -x
-      "${FIND_CALL[@]}" &>> error.txt
-      set +x
-
-   fi
-
-}
-
-if [ -z "$8" ]; then
+if [ -z "$3" ]; then
    FOLDERS="."
 else
    handle_dirs
 fi
 
-if [ -n "$9" ]; then
-   handle_files
-fi
+add_options
 
-if [ "$CHECK_MODIFIED_FILES" = "yes" ]; then
+FIND_CALL+=(';')
 
-   echo -e "${BLUE}BASE_BRANCH: $7${NC}"
+echo -e "Executing command: ${FIND_CALL[@]}"
 
-   git fetch origin "${BASE_BRANCH}" --depth=1 > /dev/null
-   MASTER_HASH=$(git rev-parse origin/"${BASE_BRANCH}")
+#set -x
+#"${FIND_CALL[@]}" &>> error.txt
+#set +x
 
-   FIND_CALL=('markdown-link-check')
-
-   add_options
-
-   mapfile -t FILE_ARRAY < <( git diff --name-only --diff-filter=AM "$MASTER_HASH" )
-
-   for i in "${FILE_ARRAY[@]}"
-      do
-         if [ "${i##*.}" == "${FILE_EXTENSION#.}" ]; then
-            FIND_CALL+=("${i}")
-            COMMAND="${FIND_CALL[*]}"
-            $COMMAND &>> error.txt || true
-            unset 'FIND_CALL[${#FIND_CALL[@]}-1]'
-         fi
-      done
-
-   check_additional_files
-   
-   check_errors
-
-else
-
-   if [ "$5" -ne -1 ]; then
-      FIND_CALL=('find' ${FOLDERS} '-name' '*'"${FILE_EXTENSION}" '-not' '-path' './node_modules/*' '-maxdepth' "${MAX_DEPTH}" '-exec' 'markdown-link-check' '{}')
-   else
-      FIND_CALL=('find' ${FOLDERS} '-name' '*'"${FILE_EXTENSION}" '-not' '-path' './node_modules/*' '-exec' 'markdown-link-check' '{}')
-   fi
-
-   add_options
-
-   FIND_CALL+=(';')
-
-   set -x
-   "${FIND_CALL[@]}" &>> error.txt
-   set +x
-
-   check_additional_files
-
-   check_errors
-
-fi
+check_errors

@@ -5,26 +5,17 @@ branding:
   icon: 'link'  
   color: 'green'
 inputs:
-  verbose-mode:
-    description: 'Use yes to enable markdown-link-check verbose mode which lists
-    additional details.'
-    required: true
-    default: 'no'
-  folder-path:
-    description: 'Specify path to a custom folder where your markdown files are located.'
-    required: true
-    default: 'docs'
+  excludes:
+    description: 'Use this to exclude links from being checked - accepts regular expressions as input.'
+    required: false
   file-extension:
     description: 'Use this to specify the file extension of Markdown files.'
     required: true
     default: '.md'
-  excludes:
-    description: 'Use this to exclude links from being checked - accepts regular expressions as input.'
-    required: false
-  synchronous:
-    description: 'Forces external/remote link checking to be done using a synchronous library. This is slower, but more reliable and stable.'
-    required: false
-    default: 'false'    
+  folder-path:
+    description: 'Specify path to a custom folder where your markdown files are located.'
+    required: true
+    default: 'docs'
   local-only:
     description: 'Checks only relative internal documentation links. Do NOT test remote links.'
     required: false
@@ -33,15 +24,30 @@ inputs:
     description: 'Determines HTTP method used for checking remote links. This can be set to "get" (slower and fewer false positives) or "head" (super fast).'
     required: false
     default: 'get'    
+  recurse:
+    description: 'Recurse through the entire directory tree below the specified path.'
+    required: false
+    default: 'true'    
+  synchronous:
+    description: 'Forces external/remote link checking to be done using a synchronous library. This is slower, but more reliable and stable.'
+    required: false
+    default: 'false'    
+  verbose-mode:
+    description: 'Use yes to enable markdown-link-check verbose mode which lists
+    additional details.'
+    required: true
+    default: 'no'
 
 runs:
   using: 'docker'
   image: 'Dockerfile'
   args:
-    - ${{ inputs.verbose-mode }}
-    - ${{ inputs.folder-path }}
-    - ${{ inputs.file-extension }}
     - ${{ inputs.excludes }}
-    - ${{ inputs.method }}
-    - ${{ inputs.synchronous }}
+    - ${{ inputs.file-extension }}
+    - ${{ inputs.folder-path }}
     - ${{ inputs.local-only }}
+    - ${{ inputs.method }}
+    - ${{ inputs.recurse }}
+    - ${{ inputs.synchronous }}
+    - ${{ inputs.verbose-mode }}
+
