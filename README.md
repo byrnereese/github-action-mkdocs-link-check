@@ -1,4 +1,4 @@
-# GitHub Action - Markdown link check 🔗✔️
+# GitHub Action - Mkdocs (and markdown) link check 🔗✔️
 
 This GitHub action checks all Markdown files in your repository for broken links. It has been especially designed for mkdocs, but can also work for any markdown-based website. 
 
