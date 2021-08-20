@@ -121,7 +121,8 @@ add_options () {
 if [ -z "$3" ]; then
    FOLDERS="."
 else
-#   handle_dirs
+   #handle_dirs
+   echo -e 'Do nothing for now'
 fi
 
 add_options
