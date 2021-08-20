@@ -11,7 +11,7 @@ RED='\033[0;31m'
 #ls "${pythonLocation}"
 #ls "${pythonLocation}/bin"
 
-CMD=('python -m mkdocs_linkcheck')
+CMD=('python -m mkdocs-linkcheck')
 #CMD=("${pythonLocation}/bin/python")
 #CMD+=('-m mkdocs_linkcheck')
 
