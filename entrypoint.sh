@@ -131,7 +131,8 @@ fi
 add_options
 
 set -x
-"${CMD[@]}" &>> error.txt
+#"${CMD[@]}" &>> error.txt
+"${CMD[@]}" 
 set +x
 
 check_errors
