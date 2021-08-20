@@ -2,21 +2,16 @@
 
 set -eu
 
+pip install --upgrade pip
+pip install mkdocs-linkcheck
+
 NC='\033[0m' # No Color
 GREEN='\033[0;32m'
 YELLOW='\033[0;33m'
 BLUE='\033[0;34m'
 RED='\033[0;31m'
 
-pip install --upgrade pip
-pip install mkdocs-linkcheck
-
-#ls "${pythonLocation}"
-#ls "${pythonLocation}/bin"
-
-CMD=('python -m mkdocs-linkcheck')
-#CMD=("${pythonLocation}/bin/python")
-#CMD+=('-m mkdocs_linkcheck')
+CMD='mkdocs-linkcheck'
 
 declare -a FIND_CALL
 declare -a COMMAND_DIRS COMMAND_FILES
