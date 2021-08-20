@@ -8,8 +8,6 @@ YELLOW='\033[0;33m'
 BLUE='\033[0;34m'
 RED='\033[0;31m'
 
-#python3 -m pip install mkdocs-linkcheck
-
 CMD='python -m mkdocs_linkcheck'
 
 declare -a FIND_CALL
@@ -101,13 +99,11 @@ add_options () {
    fi
 
    if [ "$HTTP_METHOD" ]; then
-      #CMD+=("--method $HTTP_METHOD")
       CMD+=("--method")
       CMD+=("$HTTP_METHOD")
    fi
 
    if [ "$FILE_EXTENSION" ]; then
-      #CMD+=("--ext $FILE_EXTENSION")
       CMD+=("--ext")
       CMD+=("$FILE_EXTENSION")
    fi
@@ -125,7 +121,7 @@ add_options () {
 if [ -z "$3" ]; then
    FOLDERS="."
 else
-   handle_dirs
+#   handle_dirs
 fi
 
 add_options
@@ -135,4 +131,4 @@ set -x
 "${CMD[@]}" 
 set +x
 
-check_errors
+#check_errors
