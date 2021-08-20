@@ -10,6 +10,8 @@ RED='\033[0;31m'
 
 #python3 -m pip install mkdocs-linkcheck
 
+CMD="mkdocs-linkcheck"
+
 declare -a FIND_CALL
 declare -a COMMAND_DIRS COMMAND_FILES
 declare -a COMMAND_FILES
@@ -83,35 +85,35 @@ check_errors () {
 add_options () {
     
    if [ "$EXCLUDES" != "__none__" ]; then
-      FIND_CALL+=("--exclude $EXCLUDES")
+      CMD+=(" --exclude $EXCLUDES")
    fi
    
    if [ "$RECURSE" = "yes" ]; then
-      FIND_CALL+=('--recurse')
+      CMD+=(' --recurse')
    fi
    
    if [ "$LOCAL_ONLY" = "yes" ]; then
-      FIND_CALL+=('--local')
+      CMD+=(' --local')
    fi
 
    if [ "$SYNC_MODE" = "yes" ]; then
-      FIND_CALL+=('--sync')
+      CMD+=(' --sync')
    fi
 
    if [ "$HTTP_METHOD" ]; then
-      FIND_CALL+=("--method $HTTP_METHOD")
+      CMD+=(" --method $HTTP_METHOD")
    fi
 
    if [ "$FILE_EXTENSION" ]; then
-      FIND_CALL+=("--ext $FILE_EXTENSION")
+      CMD+=(" --ext $FILE_EXTENSION")
    fi
 
    if [ "$USE_VERBOSE_MODE" = "yes" ]; then
-      FIND_CALL+=('--verbose')
+      CMD+=(' --verbose')
    fi
 
    if [ -d "$FOLDER_PATH" ]; then
-      FIND_CALL+=("$FOLDER_PATH")
+      CMD+=(" $FOLDER_PATH")
    fi
 
 }
@@ -124,12 +126,12 @@ fi
 
 add_options
 
-FIND_CALL+=(';')
+CMD+=(';')
 
-echo -e "Executing command: ${FIND_CALL[@]}"
+echo -e "Executing command: ${CMD[@]}"
 
 #set -x
-#"${FIND_CALL[@]}" &>> error.txt
+#"${CMD[@]}" &>> error.txt
 #set +x
 
 check_errors
