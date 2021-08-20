@@ -78,7 +78,8 @@ check_errors () {
 
 add_options () {
     
-   if [ "$EXCLUDES" != "__none__" ]; then
+   echo -e "EXCLUDES = ${EXCLUDES}"
+   if [ $EXCLUDES != "__none__" ]; then
       CMD+=('--exclude')
       CMD+=("$EXCLUDES")
    fi
