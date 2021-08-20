@@ -10,7 +10,7 @@ RED='\033[0;31m'
 
 #python3 -m pip install mkdocs-linkcheck
 
-CMD="python -m mkdocs_linkcheck"
+CMD='python -m mkdocs_linkcheck'
 
 declare -a FIND_CALL
 declare -a COMMAND_DIRS COMMAND_FILES
