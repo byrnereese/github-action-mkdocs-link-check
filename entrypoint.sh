@@ -128,10 +128,8 @@ add_options
 
 CMD+=(';')
 
-echo -e "Executing command: ${CMD[@]}"
-
-#set -x
-#"${CMD[@]}" &>> error.txt
-#set +x
+set -x
+"${CMD[@]}" &>> error.txt
+set +x
 
 check_errors
