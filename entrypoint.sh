@@ -8,6 +8,8 @@ YELLOW='\033[0;33m'
 BLUE='\033[0;34m'
 RED='\033[0;31m'
 
+pip install mkdocs-linkchecker
+
 #ls "${pythonLocation}"
 #ls "${pythonLocation}/bin"
 
