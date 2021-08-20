@@ -57,25 +57,23 @@ echo -e "${BLUE}VERBOSE_MODE: $8${NC}"
 #}
 
 check_errors () {
-
    if [ -e error.txt ] ; then
-      if grep -q "ERROR:" error.txt; then
-         echo -e "${YELLOW}=========================> MARKDOWN LINK CHECK <=========================${NC}"
-         cat error.txt
-         printf "\n"
-         echo -e "${YELLOW}=========================================================================${NC}"
-         exit 113
-      else
+      if grep -q "Broken links: 0" error.txt; then
          echo -e "${YELLOW}=========================> MARKDOWN LINK CHECK <=========================${NC}"
          printf "\n"
          echo -e "${GREEN}[✔] All links are good!${NC}"
          printf "\n"
          echo -e "${YELLOW}=========================================================================${NC}"
+      else
+         echo -e "${YELLOW}=========================> MARKDOWN LINK CHECK <=========================${NC}"
+         cat error.txt
+         printf "\n"
+         echo -e "${YELLOW}=========================================================================${NC}"
+         exit 113
       fi
    else
       echo -e "${GREEN}All good!${NC}"
    fi
-
 }
 
 add_options () {
@@ -126,7 +124,8 @@ add_options () {
 add_options
 
 set -x
-"${CMD[@]}" &>> error.txt
+#"${CMD[@]}" &>> error.txt
+"${CMD[@]}" >> error.txt
 set +x
 
 check_errors
