@@ -27,7 +27,7 @@ inputs:
   recurse:
     description: 'Recurse through the entire directory tree below the specified path.'
     required: false
-    default: 'true'    
+    default: 'false'    
   synchronous:
     description: 'Forces external/remote link checking to be done using a synchronous library. This is slower, but more reliable and stable.'
     required: false
@@ -36,7 +36,7 @@ inputs:
     description: 'Use yes to enable markdown-link-check verbose mode which lists
     additional details.'
     required: true
-    default: 'no'
+    default: 'false'
 
 runs:
   using: 'docker'
