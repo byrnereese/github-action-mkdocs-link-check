@@ -3,7 +3,7 @@
 set -eu
 
 pip install --upgrade pip
-pip install mkdocs-linkcheck
+pip install mkdocs-linkcheck requests
 
 NC='\033[0m' # No Color
 GREEN='\033[0;32m'
@@ -130,10 +130,6 @@ else
 fi
 
 add_options
-
-echo -e "${YELLOW}=========================> ENVIRONMENT <=========================${NC}"
-export
-echo -e "${YELLOW}=================================================================${NC}"
 
 set -x
 #"${CMD[@]}" &>> error.txt
