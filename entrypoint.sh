@@ -101,11 +101,15 @@ add_options () {
    fi
 
    if [ "$HTTP_METHOD" ]; then
-      CMD+=("--method $HTTP_METHOD")
+      #CMD+=("--method $HTTP_METHOD")
+      CMD+=("--method")
+      CMD+=("$HTTP_METHOD")
    fi
 
    if [ "$FILE_EXTENSION" ]; then
-      CMD+=("--ext $FILE_EXTENSION")
+      #CMD+=("--ext $FILE_EXTENSION")
+      CMD+=("--ext")
+      CMD+=("$FILE_EXTENSION")
    fi
 
    if [ "$USE_VERBOSE_MODE" = "yes" ]; then
