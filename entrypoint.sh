@@ -43,23 +43,18 @@ echo -e "${BLUE}RECURSE: $6${NC}"
 echo -e "${BLUE}SYNC_MODE: $7${NC}"
 echo -e "${BLUE}VERBOSE_MODE: $8${NC}"
 
-handle_dirs () {
-
-   IFS=', ' read -r -a DIRLIST <<< "$FOLDER_PATH"
-
-   for index in "${!DIRLIST[@]}"
-   do
-      if [ ! -d "${DIRLIST[index]}" ]; then
-	  # changing the behavior around this because I am not sure I understand how actions work
-          echo -e "${RED}WARNING [✖] Can't find the directory: ${YELLOW}${DIRLIST[index]}${NC}"
-          #echo -e "${RED}ERROR [✖] Can't find the directory: ${YELLOW}${DIRLIST[index]}${NC}"
-          #exit 2
-      fi
-      COMMAND_DIRS+=("${DIRLIST[index]}")
-   done
-   FOLDERS="${COMMAND_DIRS[*]}"
-
-}
+#handle_dirs () {
+#   IFS=', ' read -r -a DIRLIST <<< "$FOLDER_PATH"
+#   for index in "${!DIRLIST[@]}"
+#   do
+#      if [ ! -d "${DIRLIST[index]}" ]; then
+#          echo -e "${RED}ERROR [✖] Can't find the directory: ${YELLOW}${DIRLIST[index]}${NC}"
+#          exit 2
+#      fi
+#      COMMAND_DIRS+=("${DIRLIST[index]}")
+#   done
+#   FOLDERS="${COMMAND_DIRS[*]}"
+#}
 
 check_errors () {
 
@@ -122,18 +117,16 @@ add_options () {
 
 }
 
-if [ -z "$3" ]; then
-   FOLDERS="."
-else
-   #handle_dirs
-   echo -e 'Do nothing for now'
-fi
+#if [ -z "$3" ]; then
+#   FOLDERS="."
+#else
+#   handle_dirs
+#fi
 
 add_options
 
 set -x
-#"${CMD[@]}" &>> error.txt
-"${CMD[@]}" 
+"${CMD[@]}" &>> error.txt
 set +x
 
-#check_errors
+check_errors
