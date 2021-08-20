@@ -85,35 +85,35 @@ check_errors () {
 add_options () {
     
    if [ "$EXCLUDES" != "__none__" ]; then
-      CMD+=(" --exclude $EXCLUDES")
+      CMD+=("--exclude $EXCLUDES")
    fi
    
    if [ "$RECURSE" = "yes" ]; then
-      CMD+=(' --recurse')
+      CMD+=('--recurse')
    fi
    
    if [ "$LOCAL_ONLY" = "yes" ]; then
-      CMD+=(' --local')
+      CMD+=('--local')
    fi
 
    if [ "$SYNC_MODE" = "yes" ]; then
-      CMD+=(' --sync')
+      CMD+=('--sync')
    fi
 
    if [ "$HTTP_METHOD" ]; then
-      CMD+=(" --method $HTTP_METHOD")
+      CMD+=("--method $HTTP_METHOD")
    fi
 
    if [ "$FILE_EXTENSION" ]; then
-      CMD+=(" --ext $FILE_EXTENSION")
+      CMD+=("--ext $FILE_EXTENSION")
    fi
 
    if [ "$USE_VERBOSE_MODE" = "yes" ]; then
-      CMD+=(' --verbose')
+      CMD+=('--verbose')
    fi
 
    if [ -d "$FOLDER_PATH" ]; then
-      CMD+=(" $FOLDER_PATH")
+      CMD+=("$FOLDER_PATH")
    fi
 
 }
