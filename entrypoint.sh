@@ -8,8 +8,11 @@ YELLOW='\033[0;33m'
 BLUE='\033[0;34m'
 RED='\033[0;31m'
 
-CMD="${pythonLocation}/bin/python"
-CMD+=' -m mkdocs_linkcheck'
+ls "${pythonLocation}"
+ls "${pythonLocation}/bin"
+
+CMD=("${pythonLocation}/bin/python")
+CMD+=('-m mkdocs_linkcheck')
 
 declare -a FIND_CALL
 declare -a COMMAND_DIRS COMMAND_FILES
