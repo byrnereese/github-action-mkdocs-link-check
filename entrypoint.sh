@@ -78,10 +78,9 @@ check_errors () {
 
 add_options () {
     
-   echo -e "EXCLUDES = ${EXCLUDES}"
    if [ $EXCLUDES != "__none__" ]; then
       CMD+=('--exclude')
-      CMD+=("$EXCLUDES")
+      CMD+=("'$EXCLUDES'")
    fi
    
    if [ "$RECURSE" = "yes" ]; then
@@ -123,6 +122,8 @@ add_options () {
 #fi
 
 add_options
+
+echo "Running command: $CMD"
 
 set -x
 #"${CMD[@]}" &>> error.txt
