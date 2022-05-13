@@ -80,7 +80,7 @@ add_options () {
     
    if [ "$EXCLUDES" != "__none__" ]; then
       CMD+=('--exclude')
-      CMD+=("'$EXCLUDES'")
+      CMD+=("$EXCLUDES")
    fi
    
    if [ "$RECURSE" = "yes" ]; then
