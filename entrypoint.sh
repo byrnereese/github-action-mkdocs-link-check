@@ -78,7 +78,7 @@ check_errors () {
 
 add_options () {
     
-   if [ $EXCLUDES != "__none__" ]; then
+   if [ "$EXCLUDES" != "__none__" ]; then
       CMD+=('--exclude')
       CMD+=("'$EXCLUDES'")
    fi
