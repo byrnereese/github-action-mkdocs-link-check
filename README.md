@@ -22,7 +22,7 @@ This action uses [byrnereese/linkchecker-mkdocs](https://github.com/byrnereese/l
        runs-on: ubuntu-latest
        steps:
        - uses: actions/checkout@master
-       - uses: byrnereese/github-action-mkdocs-link-check@v1
+       - uses: byrnereese/github-action-mkdocs-link-check@v1.0
    ```
 
 ### Real-life usage samples
@@ -66,9 +66,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
-    - uses: byrnereese/github-action-mkdocs-link-check@v1
+    - uses: byrnereese/github-action-mkdocs-link-check@v1.0
       with:
-        use-verbose-mode: 'yes'
+        verbose-mode: 'yes'
         folder-path: 'docs/'
 ```
 
@@ -93,9 +93,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
-    - uses: byrnereese/github-action-mkdocs-link-check@v1
+    - uses: byrnereese/github-action-mkdocs-link-check@v1.0
       with:
-        use-verbose-mode: 'yes'
+        verbose-mode: 'yes'
         folder-path: 'docs/'
 ```
 
@@ -109,7 +109,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
-    - uses: byrnereese/github-action-mkdocs-link-check@v1
+    - uses: byrnereese/github-action-mkdocs-link-check@v1.0
       with:
         use-quiet-mode: 'yes'
         folder-path: 'md/dir1, md/dir2'
@@ -126,7 +126,7 @@ GitHub Action - Markdown link check follows the [GitHub recommended versioning s
    ```
 1. To use a major version of the action:
    ```yml
-   - uses: byrnereese/github-action-mkdocs-link-check@v1
+   - uses: byrnereese/github-action-mkdocs-link-check@v1.0
    ```
 1. You can also specify a [specific commit SHA](https://github.com/byrnereese/github-action-mkdocs-link-check/commits/master) as an action version:
    ```yml
